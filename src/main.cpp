@@ -5,7 +5,7 @@
 #include "vectors.h"
 
 void ok(){
-    //std::cout << "Ok." << std::endl;
+    std::cout << "Ok." << std::endl;
 }
 
 int main() {
@@ -46,13 +46,13 @@ int main() {
     assert(vector.capacity() == 8);
     ok();
 
-    std::cout << "Checking [] operators.";
+    std::cout << "Checking [] operators: " << std::endl;
     std::cout << "Element 0 is Mayonaise...";
     assert(vector[0] == "Mayonaise");
     ok();
 
-    std::cout << "Element 4 is Brocolli...";
-    assert(vector[4] == "Brocolli");
+    std::cout << "Element 3 is Brocolli...";
+    assert(vector[3] == "Brocolli");
     ok();
 
     std::cout << "Looks like all tests have passed!" << std::endl;
