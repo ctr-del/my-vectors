@@ -91,15 +91,7 @@ int main() {
 
     std::cout << "Testing reserve()...";
     {
-        std::size_t old_size = vector.capacity();
-        vector.reserve(4);
-        assert(old_size + 4 == vector.capacity());
-    }
-    ok();
-
-    std::cout << "Testing resize()...";
-    {
-        vector.resize(64);
+        vector.reserve(64);
         assert(vector.capacity() == 64);
     }
     ok();

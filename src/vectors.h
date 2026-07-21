@@ -137,27 +137,33 @@ void Vector<T>::expand() {
 */
 template <typename T>
 void Vector<T>::expand() {
-    resize((_capacity == 0 ? 1 : _capacity * 2));
+    reserve((_capacity == 0 ? 1 : _capacity * 2));
 }
 
 
 template <typename T>
 void Vector<T>::reserve(std::size_t amount) {
-    resize(_capacity + amount);
+    if (amount > _capacity){
+        T* new_data = new T[amount];
+
+        for (std::size_t i = 0; i < _size; i++){
+            new_data[i] = std::move(_data[i]);
+        }
+
+        delete[] _data;
+
+        _data = new_data;
+        _capacity = amount;
+    }
 }
 
 template <typename T>
-void Vector<T>::resize(std::size_t new_capacity) {
-    T* new_data = new T[new_capacity];
-
-    for (std::size_t i = 0; i < _size; i++){
-        new_data[i] = std::move(_data[i]);
+void Vector<T>::resize(std::size_t new_size) {
+    if(new_size > _capacity){
+        reserve(new_size);
     }
 
-    delete[] _data;
-
-    _data = new_data;
-    _capacity = new_capacity;
+    _size = new_size;
 }
 
 /*
