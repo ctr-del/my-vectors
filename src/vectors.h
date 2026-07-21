@@ -32,6 +32,8 @@ class Vector {
         const T& at(std::size_t index) const;
 
         void push_back(const T& value);
+        void expand();
+        void expand(const std::size_t amount);
 
         std::size_t size() const;
         std::size_t capacity() const;
@@ -39,6 +41,9 @@ class Vector {
 
 };
 
+//
+// ===[ CONSTRUCTORS AND DESTRUCTORS ]===
+//
 template <typename T>
 Vector<T>::Vector() :
     _data(nullptr),
@@ -53,6 +58,10 @@ Vector<T>::~Vector() {
     delete[] _data;
 }
 
+//
+// ===[ ACCESS OPERATORS AND METHODS ]===
+//
+
 template <typename T>
 T& Vector<T>::operator[](std::size_t index) {
     return _data[index];
@@ -66,7 +75,7 @@ const T& Vector<T>::operator[](std::size_t index) const{
 template <typename T>
 T& Vector<T>::at(std::size_t index) {
     if (index > _size) {
-        throw std::out_of_range_exception("Error! Attempted to access vector beyond the vector size.");
+        throw std::out_of_range("Error! Attempted to access vector beyond the vector size.");
     }
     return *this[index];
 }
@@ -74,11 +83,43 @@ T& Vector<T>::at(std::size_t index) {
 template <typename T>
 const T& Vector<T>::at(std::size_t index) const {
     if (index > _size) {
-        throw std::out_of_range_exception("Error! Attempted to access const vector boyond the vector size.");
+        throw std::out_of_range("Error! Attempted to access const vector boyond the vector size.");
     }
     return *this[index];
 }
 
+//
+// ===[ MODIFIER OPERATORS AND METHODS ]===
+//
+template <typename T>
+void Vector<T>::push_back(const T& value) {
+    //First of all, let's compare the size and capacity of the vector, if it is the same, lets extend the capacity before we add any elements...
+    if (_size == _capacity){
+        expand();
+    }
+    _data[_size] = value;
+    ++_size;
+}
+
+template <typename T>
+void Vector<T>::expand(){
+    std::size_t new_capacity = (_capacity == 0) ? 1 : _capacity * 2;
+
+    T* new_data = new T[new_capacity];
+
+    for (std::size_t i = 0; i < _size; i++){
+        new_data[i] = std::move(_data[i]);
+    }
+
+    delete _data;
+
+    _data = new_data;
+    _capacity = new_capacity;
+}
+
+//
+// ===[ DATA METHODS ]===
+//
 template <typename T>
 std::size_t Vector<T>::size() const {
     return _size;
