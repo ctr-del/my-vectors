@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <utility>
 #include <stdexcept>
+#include <iostream>
 
 template <typename T>                                                           //Aw heck, here we go again, welcome back Mr.GPT.
 class Vector {
@@ -34,8 +35,11 @@ class Vector {
 
         void push_back(const T& value);
         void pop_back();
+        void clear();
 
         void expand();
+        void reserve(std::size_t amount);
+        void resize(std::size_t new_capacity);
 
         std::size_t size() const;
         std::size_t capacity() const;
@@ -109,7 +113,14 @@ void Vector<T>::pop_back() {
 }
 
 template <typename T>
-void Vector<T>::expand(){
+void Vector<T>::clear() {
+    _size = 0;
+}
+
+//LEGACY VERSION
+/*
+template <typename T>
+void Vector<T>::expand() {
     std::size_t new_capacity = (_capacity == 0) ? 1 : _capacity * 2;
 
     T* new_data = new T[new_capacity];
@@ -123,6 +134,57 @@ void Vector<T>::expand(){
     _data = new_data;
     _capacity = new_capacity;
 }
+*/
+template <typename T>
+void Vector<T>::expand() {
+    resize((_capacity == 0 ? 1 : _capacity * 2));
+}
+
+
+template <typename T>
+void Vector<T>::reserve(std::size_t amount) {
+    resize(_capacity + amount);
+}
+
+template <typename T>
+void Vector<T>::resize(std::size_t new_capacity) {
+    T* new_data = new T[new_capacity];
+
+    for (std::size_t i = 0; i < _size; i++){
+        new_data[i] = std::move(_data[i]);
+    }
+
+    delete[] _data;
+
+    _data = new_data;
+    _capacity = new_capacity;
+}
+
+/*
+template <typename T>
+void Vector<T>::expand(){
+    std::size_t new_capacity = (_capacity == 0) ? 1 : _capacity * 2;
+    reserve(new_capacity);
+}
+
+template <typename T>
+void Vector<T>::reserve(std::size_t amount){
+    std::size_t new_capacity = _capacity + amount;
+
+    T* new_data = new T[new_capacity];
+
+    for (std::size_t i = 0; i < _size; i++){
+        new_data[i] = std::move(_data[i]);
+    }
+
+    delete[] _data;
+
+    std::cout << _capacity << "/" << new_capacity << std::endl;
+
+    _data = new_data;
+    _capacity = new_capacity;
+}
+*/
 
 //
 // ===[ DATA METHODS ]===

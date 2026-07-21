@@ -74,5 +74,36 @@ int main() {
     ok();
     debug::print_vector(vector);
 
+    std::cout << "Testing clear()...";
+    vector.clear();
+    assert(vector.empty());
+    ok();
+
+    std::cout << "Populating the vector again...";
+    vector.push_back("Pineapple");
+    vector.push_back("Lemon");
+    vector.push_back("Pear");
+    vector.push_back("Seabear");
+    vector.push_back("Tangerine");
+    vector.push_back("Salmon");
+    ok();
+    debug::print_vector(vector);
+
+    std::cout << "Testing reserve()...";
+    {
+        std::size_t old_size = vector.capacity();
+        vector.reserve(4);
+        assert(old_size + 4 == vector.capacity());
+    }
+    ok();
+
+    std::cout << "Testing resize()...";
+    {
+        vector.resize(64);
+        assert(vector.capacity() == 64);
+    }
+    ok();
+
+
     std::cout << "Looks like all tests have passed!" << std::endl;
 }
