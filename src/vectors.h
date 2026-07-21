@@ -49,7 +49,7 @@ std::size_t Vector<T>::capacity() const {
 
 template <typename T>
 bool Vector<T>::empty() const {
-    return _size == 0;
+    return _data == nullptr;
 }
 
 #endif
