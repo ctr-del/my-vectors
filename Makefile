@@ -15,5 +15,5 @@ build/%.o: src/%.cpp
 	$(CPP) $(CPP_FLAGS) -c $< -o $@
 
 clean:
-	rmdir -rf build
-	rmdir -rf bin
+	rm -rf build
+	rm -rf bin
