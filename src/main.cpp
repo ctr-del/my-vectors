@@ -4,10 +4,17 @@
 #include "vectors.h"
 
 int main() {
-    std::cout << "Test Suite A for my Vector implementation." << std::endl;
+    std::cout << "===[ Test Suite A for my Vector implementation. ]====================" << std::endl;
 
     //Let's declare a Vector right here...
+    std::cout << "Declaring our Vector variable..." << std::endl;
     Vector<int> vector;
+    std::cout << "Checking if the size is equal to zero..." << std::endl;
     assert(vector.size() == 0);
+    std::cout << "Checking if the capacity is equal to zero..." << std::endl;
     assert(vector.capacity() == 0);
+    std::cout << "Making sure that the data pointer is null..." << std::endl;
+    assert(vector.empty() == true);
+
+    std::cout << "Looks like all tests have passed!" << std::endl;
 }
