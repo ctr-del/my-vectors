@@ -10,7 +10,7 @@ all: $(BINARY)
 
 $(BINARY): $(OBJECTS)
 	mkdir -p bin
-	$(CPP) $(CPP_FLAGS) $(OBJECTS) -o bin/$(BINARY)
+	$(CPP) $(CPP_FLAGS) $(OBJECTS) -o $(BINARY)
 
 build/%.o: src/%.cpp
 	mkdir -p build
