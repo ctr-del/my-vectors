@@ -1,0 +1,27 @@
+#Build Directories
+build/
+bin/
+
+#VSCode
+.vscode/
+
+#Executables & Libraries
+*.exe
+*.a
+*.lib
+
+#Object
+*.o
+*.obj
+
+# DLLs
+*.dll
+*.so
+*.dylib
+
+# Debug files
+*.pdb
+
+# Temporary files
+*.tmp
+*.log
