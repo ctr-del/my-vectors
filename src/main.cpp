@@ -1,11 +1,23 @@
 #include <iostream>
 #include <string>
+#include <utility>
 #include <cassert>
 
 #include "vectors.h"
 
 void ok(){
     std::cout << "Ok." << std::endl;
+}
+
+namespace debug {
+    template <typename T>
+    void print_vector(const Vector<T>& v){
+        std::cout << "[=====VECTOR PRINT : =====]" << std::endl;
+        for (std::size_t i = 0; i < v.size(); i++){
+            std::cout << v[i] << std::endl;
+        }
+        std::cout << "[=========================]" << std::endl;
+    }
 }
 
 int main() {
@@ -37,6 +49,7 @@ int main() {
     vector.push_back("Brocolli");
     vector.push_back("Tomato");
     ok();
+    debug::print_vector(vector);
 
     std::cout << "Checking to see if the size is equal to 5...";
     assert(vector.size() == 5);
@@ -54,6 +67,12 @@ int main() {
     std::cout << "Element 3 is Brocolli...";
     assert(vector[3] == "Brocolli");
     ok();
+
+    std::cout << "Testing popback()...";
+    vector.pop_back();
+    assert(vector.size() == 4);
+    ok();
+    debug::print_vector(vector);
 
     std::cout << "Looks like all tests have passed!" << std::endl;
 }

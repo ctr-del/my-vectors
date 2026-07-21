@@ -33,8 +33,9 @@ class Vector {
         const T& at(std::size_t index) const;
 
         void push_back(const T& value);
+        void pop_back();
+
         void expand();
-        void expand(const std::size_t amount);
 
         std::size_t size() const;
         std::size_t capacity() const;
@@ -100,6 +101,11 @@ void Vector<T>::push_back(const T& value) {
     }
     _data[_size] = value;
     ++_size;
+}
+
+template <typename T>
+void Vector<T>::pop_back() {
+    --_size;
 }
 
 template <typename T>
