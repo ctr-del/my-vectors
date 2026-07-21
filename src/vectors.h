@@ -2,6 +2,7 @@
 #define CUSTOM_VECTOR_HPP
 
 #include <cstddef>
+#include <utility>
 #include <stdexcept>
 
 template <typename T>                                                           //Aw heck, here we go again, welcome back Mr.GPT.
@@ -74,18 +75,18 @@ const T& Vector<T>::operator[](std::size_t index) const{
 
 template <typename T>
 T& Vector<T>::at(std::size_t index) {
-    if (index > _size) {
+    if (index >= _size) {
         throw std::out_of_range("Error! Attempted to access vector beyond the vector size.");
     }
-    return *this[index];
+    return (*this)[index];
 }
 
 template <typename T>
 const T& Vector<T>::at(std::size_t index) const {
-    if (index > _size) {
+    if (index >= _size) {
         throw std::out_of_range("Error! Attempted to access const vector boyond the vector size.");
     }
-    return *this[index];
+    return (*this)[index];
 }
 
 //
@@ -111,7 +112,7 @@ void Vector<T>::expand(){
         new_data[i] = std::move(_data[i]);
     }
 
-    delete _data;
+    delete[] _data;
 
     _data = new_data;
     _capacity = new_capacity;
