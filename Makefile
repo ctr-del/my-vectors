@@ -2,9 +2,11 @@ CPP			:=	g++
 CPP_FLAGS	:= 	-Wall -Wextra -std=c++20
 SOURCES		:=	$(wildcard src/*.cpp)
 OBJECTS		:= 	$(patsubst src/%.cpp, build/%.o, $(SOURCES))
-BINARY		:= 	VectorTest.exe
+BINARY		:= 	bin/VectorTest.exe
 
-.PHONY: clean
+.PHONY: all clean
+
+all: $(BINARY)
 
 $(BINARY): $(OBJECTS)
 	mkdir -p bin
