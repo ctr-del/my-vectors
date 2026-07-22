@@ -7,6 +7,7 @@
 
 #include "vectors.h"
 #include "test.h"
+#include "test_failure_codes.h"
 
 namespace debug {
     template <typename T>
@@ -49,17 +50,68 @@ int main() {
     #ifndef NDEBUG
     std::cout << "Vector Test Suite 2.0" << std::endl;
 
-    Test tVectorInitTest("tVectorInitTest", []() -> TestResult {
+    //Vector Construction Tests...
+    Test tVectorBlankInitTest("tVectorBlankInitTest", []() -> TestResult {
         //Initialize the empty vector
         Vector<int> vector;
-        if(true) {
-            return TestResult(3, std::format("Broken initialization. Was expecting 0 but got {} instead.", vector.size()));
+        if(vector.size() != 0) {
+            return TestResult(T_FAILURE_TO_INITIALIZE_BLANK, std::format("Broken blank initialization. Was expecting a size of 0 but got {} instead.", vector.size()));
         }
+
+        if(vector.capacity() != 0) {
+            return TestResult(T_FAILURE_TO_INITIALIZE_BLANK, std::format("Broken blank initialization. Was expecting 0 capacity of 0 but got {} instead.", vector.capacity()));
+        }
+
+        return TestResult(T_SUCCESS);
     });
 
+    Test tVectorInitializerListConstructor("tVectorInitializerListConstructor", []() -> TestResult {
+        std::initializer_list<std::string> init_list = {
+            "banana",
+            "orange",
+            "pineapple",
+            "cherry",
+            "pear"
+        };
+        Vector<std::string> vector (init_list);
+
+        //Is the size correct?
+        if(vector.size() != 5) {
+            return TestResult(T_FAILURE_TO_INITIALIZE_INIT_LIST, std::format("Vector initiliazer list constructor failed. Vector size was expected to be 5 but it's {}.", vector.size()));
+        }
+
+        //Is the capacity correct?
+        if(vector.capacity() != 8) {
+            return TestResult(T_FAILURE_TO_INITIALIZE_INIT_LIST, std::format("Vector initiliazer list constructor failed. Vector capacity was expected to be 8 but it's {}.", vector.capacity()));
+        }
+
+        return TestResult(T_SUCCESS);
+    });
+
+    Test tVectorCopyConstructor("tVectorCopyConstructor", []() -> TestResult {
+        Vector<int> vector_a ({
+            4,
+            7,
+            9,
+            4,
+            3,
+            2
+        });
+
+        Vector<int> vector_b (vector_a);
+
+        for(std::size_t i = 0; i < vector_a.size(); i++){
+            if(vector_a[i] == vector_b[i]){
+                debug::print_compare_vector(vector_a, vector_b);
+                return TestResult(T_COPY_CONSTRUCT_MISMATCH, "Vector copy constructor failed. Vector a does not have the same elements as vector b.");
+            }
+        }
+
+        return TestResult(T_SUCCESS);
+    });
 
     Test::run_all();
-
+    #else
     std::cout << "===[ Test Suite A for my Vector implementation. ]====================" << std::endl;
 
     std::cout << "Declaring our Vector variable...";
@@ -201,7 +253,5 @@ int main() {
     }
 
     std::cout << "Looks like all tests have passed!" << std::endl;
-    #else
-    std::cout << "This is the only thing that prints in a release build, isn't that weird?";
     #endif
 }

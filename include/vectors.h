@@ -23,15 +23,15 @@ class Vector {
 
         //Initializer list vector constructor
         Vector(std::initializer_list<T>);
-
+        Vector& operator=(const std::initializer_list<T>& arr);
         //Vector deconstructor
         ~Vector();
 
-        //Lets disable copying for now, but Vector Copy Constructor and Copy Assignment
+        //Copy Assignment and Constructor
         Vector(const Vector& other);
         Vector& operator=(const Vector& other);
 
-        //Move operations here for future implementation.
+        //Move Assignment and Constructor
         Vector(Vector&& other) noexcept;
         Vector& operator=(Vector&& other) noexcept;
 
@@ -84,6 +84,15 @@ Vector<T>::Vector(std::initializer_list<T> initial_array):
     Vector()
 {
     for(T item : initial_array){
+        push_back(item);
+    }
+}
+
+template <typename T>
+Vector<T>& Vector<T>::operator=(const std::initializer_list<T>& arr){
+    clear();
+    
+    for(T item : arr){
         push_back(item);
     }
 }

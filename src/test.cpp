@@ -1,4 +1,5 @@
 #include "test.h"
+#include "test_failure_codes.h"
 
 TestResult::TestResult(short statusCode):
     _statusCode(statusCode)
@@ -11,7 +12,7 @@ TestResult::TestResult(short statusCode):
 }
 
 TestResult::TestResult():
-    _statusCode(-501),
+    _statusCode(T_FAILURE_TEST_NOT_INITIALIZED),
     _desc("Result object not initialized. Are you sure you remembered to modify it in your test?")
 {
 
@@ -41,10 +42,10 @@ TestResult Test::run() {
     } catch (const std::exception& exception) {
         std::string out = "Unhandled std exception during test: ";
         out.append(exception.what());
-        result = TestResult(-502, out);
+        result = TestResult(T_FAILURE_UNCAUGHT_STD_EXCEPTION, out);
     } catch (...) {
         std::string out = "Unhandled non-std exception during test.";
-        result = TestResult(-503, out);
+        result = TestResult(T_FAILURE_UNCAUGHT_NON_STD_EXCEPTION, out);
     }
 
     if (result.status() == TestResult::Status::pass) {

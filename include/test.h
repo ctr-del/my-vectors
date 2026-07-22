@@ -17,6 +17,8 @@ Hard-coded status codes, avoid using when possible as they are used by the testi
 #include <utility>
 #include <list>
 
+#include "test_failure_codes.h"
+
 class TestResult {
     public:
     enum class Status {
