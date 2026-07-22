@@ -37,7 +37,7 @@ namespace debug {
             } catch (const std::out_of_range& e){
                 std::cout << "<empty>";
             }
-            std::cout << std::endl;
+            std::cout << std::endl << "[=======================]" << std::endl;
         }
     }
 }
@@ -109,11 +109,35 @@ int main() {
         vector_b[2] = 5;
 
         if(vector_a[2] == vector_b[2]){
-            debug::print_compare_vector(vector_a, vector_b);
             return TestResult(T_COPY_CONSTRUCT_MISMATCH, "Vector copy constructor failed. Vector b is a shallow copy of vector b instead of a deep copy.");
         }
 
         return TestResult(T_SUCCESS);
+    });
+
+    Test tVectorCopyAssignment("tVectorCopyAssignment", []() -> TestResult {
+        Vector<std::string> vector_a ({
+            "gameboy",
+            "gameboy advance",
+            "gamegear",
+            "neogeo pocket"
+        });
+
+        Vector<std::string> vector_b = vector_a;
+
+        vector_a.clear();
+
+        if(vector_b.empty()){
+            return TestResult(T_COPY_ASSIGNMENT_MISMATCH, "Copy assignment failed. Copy of vector_a is not uniqe!");
+        }
+
+        return TestResult(0);
+    });
+
+    Test tVectorMoveConstructor("tVectorMoveConstructor", []() -> TestResult {
+        //TODO
+
+        return TestResult(0);
     });
 
     Test::run_all();
