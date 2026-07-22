@@ -68,7 +68,13 @@ BINARY_RELEASE			:= $(BIN_DIR)/release/$(BIN_NAME)
 
 ######################################################################################################
 
-.PHONY: all release debug clean
+.PHONY: all release debug clean launch-release launch-debug
+
+launch-debug: debug
+	$(BINARY_DEBUG)
+
+launch-release: release
+	$(BINARY_RELEASE)
 
 release: $(BINARY_RELEASE)
 
