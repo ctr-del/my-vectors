@@ -39,9 +39,12 @@ TestResult Test::run() {
     try {
         result = _test_function();
     } catch (const std::exception& exception) {
-        std::string out = "Unhandled exception during test: ";
+        std::string out = "Unhandled std exception during test: ";
         out.append(exception.what());
         result = TestResult(-502, out);
+    } catch (...) {
+        std::string out = "Unhandled non-std exception during test.";
+        result = TestResult(-503, out);
     }
 
     if (result.status() == TestResult::Status::pass) {
@@ -74,7 +77,11 @@ std::list<TestResult> Test::run_all() {
     for(auto* test : _tests) {
         TestResult result = test->run();
         ++testsRan;
-        result.status() == TestResult::Status::pass ? ++testsPassed : ++testsFailed;
+        if(result.status() == TestResult::Status::pass){
+            ++testsPassed;
+        }else{
+            ++testsFailed;
+        }
         results.push_back(result);
     }
 

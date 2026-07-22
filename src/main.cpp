@@ -3,12 +3,10 @@
 #include <utility>
 #include <cassert>
 #include <algorithm>
+#include <format>
 
 #include "vectors.h"
-
-void ok(){
-    std::cout << "Ok." << std::endl;
-}
+#include "test.h"
 
 namespace debug {
     template <typename T>
@@ -43,7 +41,25 @@ namespace debug {
     }
 }
 
+void ok(){
+    std::cout << "Ok." << std::endl;
+}
+
 int main() {
+    #ifndef NDEBUG
+    std::cout << "Vector Test Suite 2.0" << std::endl;
+
+    Test tVectorInitTest("tVectorInitTest", []() -> TestResult {
+        //Initialize the empty vector
+        Vector<int> vector;
+        if(true) {
+            return TestResult(3, std::format("Broken initialization. Was expecting 0 but got {} instead.", vector.size()));
+        }
+    });
+
+
+    Test::run_all();
+
     std::cout << "===[ Test Suite A for my Vector implementation. ]====================" << std::endl;
 
     std::cout << "Declaring our Vector variable...";
@@ -185,4 +201,7 @@ int main() {
     }
 
     std::cout << "Looks like all tests have passed!" << std::endl;
+    #else
+    std::cout << "This is the only thing that prints in a release build, isn't that weird?";
+    #endif
 }
