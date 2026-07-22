@@ -2,6 +2,7 @@
 #include <string>
 #include <utility>
 #include <cassert>
+#include <algorithm>
 
 #include "vectors.h"
 
@@ -17,6 +18,28 @@ namespace debug {
             std::cout << v[i] << std::endl;
         }
         std::cout << "[=========================]" << std::endl;
+    }
+
+    template <typename T>
+    void print_compare_vector(const Vector<T>& vector_a, const Vector<T> vector_b){
+        const std::size_t loop_size = std::max(vector_a.size(), vector_b.size());
+        std::cout << "[===VECTOR COMPARISON===]" << std::endl;
+        for (std::size_t i = 0; i < loop_size; i++){
+            try {
+                std::cout << vector_a[i];
+            } catch (const std::out_of_range& e){
+                std::cout << "<empty>";
+            }
+
+            std::cout << " -> ";
+
+            try {
+                std::cout << vector_b[i];
+            } catch (const std::out_of_range& e){
+                std::cout << "<empty>";
+            }
+            std::cout << std::endl;
+        }
     }
 }
 
@@ -113,15 +136,36 @@ int main() {
     std::cout << std::endl;
     ok();
 
-    std::cout << "Creating a const Vector to test const iterators...";
-    const Vector<int> const_vector ({3, 5, 17, 4, 9, 12, 3, 2, 19, 92, 5, 2, 9});
-    ok();
+    {
+        std::cout << "Creating a const Vector to test const iterators...";
+        const Vector<int> const_vector ({3, 5, 17, 4, 9, 12, 3, 2, 19, 92, 5, 2, 9});
+        ok();
 
-    std::cout << "Iterating through the const Vector list we have..." << std::endl;
-    for (const auto element : const_vector) {
-        std::cout << element << " ";
+        std::cout << "Iterating through the const Vector list we have..." << std::endl;
+        for (const auto element : const_vector) {
+            std::cout << element << " ";
+        }
+        ok();
     }
-    ok();
+
+    {
+        std::cout << "Testing copy constructor and copy assignment..." << std::endl;
+        Vector<int> original ({3, 7, 5, 8, 12});
+        std::cout << "Trying to copy the original with a copy constructor..." << std::endl;
+        Vector<int> copyA (original);
+        std::cout << "Making a few changes to the copy to confirm it is indeed a copy..." << std::endl;
+        copyA[1] = 9;
+        copyA[3] = 2;
+        std::cout << "Comparing..." << std::endl;
+        debug::print_compare_vector(original, copyA);
+        std::cout << "Testing copy assignment..." << std::endl;
+        Vector<int> copyB ({102, 151, 522, 913});
+        debug::print_compare_vector(copyB, original);
+        copyB = original;
+        debug::print_compare_vector(copyB, original);
+        copyB = copyA;
+        debug::print_compare_vector(copyB, original);
+    }
 
     std::cout << "Looks like all tests have passed!" << std::endl;
 }

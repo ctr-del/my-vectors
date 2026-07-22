@@ -14,6 +14,7 @@ class Vector {
         std::size_t _size;                                                      //This is the size of the vector, i.e. the part of the vector that actually has data.
         std::size_t _capacity;                                                  //This is the capacity of the vector, i.e. all the memory allocated to the vector at this point in time.
         void expand();
+        void swap();
 
     public:
         //Default vector constructor
@@ -26,8 +27,8 @@ class Vector {
         ~Vector();
 
         //Lets disable copying for now, but Vector Copy Constructor and Copy Assignment
-        Vector(const Vector& other) = delete;
-        Vector& operator=(const Vector& other) = delete;
+        Vector(const Vector& other);
+        Vector& operator=(const Vector& other);
 
         //Move operations here for future implementation.
         Vector(Vector&& other) = delete;
@@ -91,6 +92,40 @@ Vector<T>::~Vector() {
     delete[] _data;
 }
 
+//
+// ===[COPY ASSIGNMENT AND COPY CONSTRUCTOR]===
+//
+
+//Copy Constructor
+template <typename T>
+Vector<T>::Vector(const Vector& other):
+    Vector()
+{
+    reserve(other._capacity);
+
+    for (auto element : other){
+        push_back(element);
+    }
+}
+
+//Copy Assignment
+template <typename T>
+Vector<T>& Vector<T>::operator=(const Vector& other ){
+    //Return early if we are trying to assign to ourselves...
+    if(this == &other){
+        return *this;
+    }
+
+    //Clear the vector before we add anything to it.
+    clear();
+
+    //
+    for (auto element : other){
+        push_back(element);
+    }
+
+    return *this;
+}
 
 //
 // ===[ ITERATOR OPERATIONS ]===
