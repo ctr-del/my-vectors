@@ -96,6 +96,13 @@ int main() {
     }
     ok();
 
+    std::cout << "Testing resize()...";
+    {
+        vector.resize(86);
+        assert(vector.capacity() == 86);
+        assert(vector.size() == 86);
+    }
+    ok();
 
     std::cout << "Looks like all tests have passed!" << std::endl;
 }

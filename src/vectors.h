@@ -12,6 +12,8 @@ class Vector {
         T* _data;
         std::size_t _size;                                                      //This is the size of the vector, i.e. the part of the vector that actually has data.
         std::size_t _capacity;                                                  //This is the capacity of the vector, i.e. all the memory allocated to the vector at this point in time.
+        void expand();
+        
     public:
         //Default vector constructor
         Vector();
@@ -20,12 +22,12 @@ class Vector {
         ~Vector();
 
         //Lets disable copying for now, but Vector Copy Constructor and Copy Assignment
-        Vector(const Vector&) = delete;
-        Vector& operator=(const Vector&) = delete;
+        Vector(const Vector& other) = delete;
+        Vector& operator=(const Vector& other) = delete;
 
         //Move operations here for future implementation.
-        Vector(const Vector&&);
-        Vector&& operator=(const Vector&&);
+        Vector(Vector&& other) = delete;
+        Vector& operator=(Vector&& other) = delete;
 
         //Access operators and methods
         T& operator[](std::size_t index);
@@ -37,7 +39,6 @@ class Vector {
         void pop_back();
         void clear();
 
-        void expand();
         void reserve(std::size_t amount);
         void resize(std::size_t new_capacity);
 
