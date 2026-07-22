@@ -13,8 +13,8 @@ BIN_NAME			:= VectorTest.exe
 
 SOURCES				:= $(wildcard $(SOURCE_DIR)/*.cpp)
 
-OBJECTS_DEBUG		:= 	$(patsubst src/%.cpp,$(DEBUG_DIR)/%.o,$(SOURCES))
-OBJECTS_RELEASE		:= 	$(patsubst src/%.cpp,$(RELEASE_DIR)/%.o,$(SOURCES))
+OBJECTS_DEBUG		:= 	$(patsubst $(SOURCE_DIR)/%.cpp,$(DEBUG_DIR)/%.o,$(SOURCES))
+OBJECTS_RELEASE		:= 	$(patsubst $(SOURCE_DIR)/%.cpp,$(RELEASE_DIR)/%.o,$(SOURCES))
 
 BINARY_DEBUG		:= 	$(BIN_DIR)/debug/$(BIN_NAME)
 BINARY_RELEASE		:=	$(BIN_DIR)/release/$(BIN_NAME)
