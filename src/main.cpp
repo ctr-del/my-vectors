@@ -101,10 +101,16 @@ int main() {
         Vector<int> vector_b (vector_a);
 
         for(std::size_t i = 0; i < vector_a.size(); i++){
-            if(vector_a[i] == vector_b[i]){
-                debug::print_compare_vector(vector_a, vector_b);
+            if(vector_a[i] != vector_b[i]){
                 return TestResult(T_COPY_CONSTRUCT_MISMATCH, "Vector copy constructor failed. Vector a does not have the same elements as vector b.");
             }
+        }
+
+        vector_b[2] = 5;
+
+        if(vector_a[2] == vector_b[2]){
+            debug::print_compare_vector(vector_a, vector_b);
+            return TestResult(T_COPY_CONSTRUCT_MISMATCH, "Vector copy constructor failed. Vector b is a shallow copy of vector b instead of a deep copy.");
         }
 
         return TestResult(T_SUCCESS);
