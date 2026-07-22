@@ -1,24 +1,34 @@
 //TEST SUITE HEADER V.0.1.0
 
+/*
+Hard-coded status codes, avoid using when possible as they are used by the testing framework itself.
+====================================================================================================|
+0       ->     Success, and should always mean success for consistancy.                             |
+-501    ->     Test result never properly initialized, usually a sign of a badly written test.      |
+-502    ->     An unhandled exception occured during the test. Defaults to a test failure,          |
+====================================================================================================|
+*/
+
 #ifndef TEST_SUITE_HPP
 #define TEST_SUITE_HPP
 
 #include <iostream>
 #include <string>
+#include <utility>
 #include <list>
 
 class TestResult {
     public:
-    enum Status {
-        PASS,
-        FAIL
+    enum class Status {
+        pass,
+        fail
     };
     TestResult(short statusCode, std::string desc);
     TestResult(short statusCode);
     TestResult();
     Status status() const;
     short status_code() const;
-    const std::string description() const;
+    const std::string& description() const;
 
     private:
         Status _status;
