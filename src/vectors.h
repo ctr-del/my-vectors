@@ -136,7 +136,7 @@ Vector<T>::Vector(Vector&& other) noexcept:
 //Move Assignment
 template <typename T>
 Vector<T>& Vector<T>::operator=(Vector&& other) noexcept {
-    if(this != &other){
+    if(this == &other){
         return *this;
     }
     delete[] _data;
