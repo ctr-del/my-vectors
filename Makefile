@@ -1,5 +1,5 @@
 CPP			:=	g++
-CPP_FLAGS	:= 	-Wall -Wextra -std=c++20
+CPP_FLAGS	:= 	-Wall -Wextra -Wpedantic -Wshadow -std=c++20
 SOURCES		:=	$(wildcard src/*.cpp)
 OBJECTS		:= 	$(patsubst src/%.cpp, build/%.o, $(SOURCES))
 BINARY		:= 	bin/VectorTest.exe
