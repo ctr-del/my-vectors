@@ -14,7 +14,8 @@ class Vector {
         std::size_t _size;                                                      //This is the size of the vector, i.e. the part of the vector that actually has data.
         std::size_t _capacity;                                                  //This is the capacity of the vector, i.e. all the memory allocated to the vector at this point in time.
         void expand();
-        void swap();
+
+        void swap(Vector& other) noexcept;
 
     public:
         //Default vector constructor
@@ -31,8 +32,8 @@ class Vector {
         Vector& operator=(const Vector& other);
 
         //Move operations here for future implementation.
-        Vector(Vector&& other) = delete;
-        Vector& operator=(Vector&& other) = delete;
+        Vector(Vector&& other) noexcept;
+        Vector& operator=(Vector&& other) noexcept;
 
         //Iterator Nonsense
         using iterator = T*;
@@ -111,20 +112,42 @@ Vector<T>::Vector(const Vector& other):
 //Copy Assignment
 template <typename T>
 Vector<T>& Vector<T>::operator=(const Vector& other ){
-    //Return early if we are trying to assign to ourselves...
-    if(this == &other){
+    //Let's create a copy of the other vector...
+    Vector<T> copy(other);
+
+    //And we'll SWAP them so they are the same!
+    swap(copy);
+
+    return *this;
+}
+
+//Move Constructor
+template <typename T>
+Vector<T>::Vector(Vector&& other) noexcept:
+    _data(other._data),
+    _size(other._size),
+    _capacity(other._capacity)
+{
+    other._data = nullptr;
+    other._size = 0;
+    other._capacity = 0;
+}
+
+//Move Assignment
+template <typename T>
+Vector<T>& Vector<T>::operator=(Vector&& other) noexcept {
+    if(this != &other){
         return *this;
     }
+    delete[] _data;
 
-    reserve(other.capacity());
+    _data = other._data;
+    _size = other._size;
+    _capacity = other._capacity;
 
-    //Clear the vector before we add anything to it.
-    clear();
-
-    //
-    for (auto element : other){
-        push_back(element);
-    }
+    other._data = nullptr;
+    other._size = 0;
+    other._capacity = 0;
 
     return *this;
 }
@@ -216,30 +239,6 @@ void Vector<T>::clear() {
     _size = 0;
 }
 
-//LEGACY VERSION
-/*
-template <typename T>
-void Vector<T>::expand() {
-    std::size_t new_capacity = (_capacity == 0) ? 1 : _capacity * 2;
-
-    T* new_data = new T[new_capacity];
-
-    for (std::size_t i = 0; i < _size; i++){
-        new_data[i] = std::move(_data[i]);
-    }
-
-    delete[] _data;
-
-    _data = new_data;
-    _capacity = new_capacity;
-}
-*/
-template <typename T>
-void Vector<T>::expand() {
-    reserve((_capacity == 0 ? 1 : _capacity * 2));
-}
-
-
 template <typename T>
 void Vector<T>::reserve(std::size_t amount) {
     if (amount > _capacity){
@@ -283,4 +282,20 @@ bool Vector<T>::empty() const {
     return _size == 0;
 }
 
+//
+//===[HELPER METHODS]===
+//
+template <typename T>
+void Vector<T>::expand() {
+    reserve((_capacity == 0 ? 1 : _capacity * 2));
+}
+
+template <typename T>
+void Vector<T>::swap(Vector<T>& other) noexcept {
+    using std::swap;
+
+    swap(_data, other._data);
+    swap(_size, other._size);
+    swap(_capacity, other._capacity);
+}
 #endif

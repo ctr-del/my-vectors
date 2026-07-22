@@ -23,7 +23,6 @@ namespace debug {
     template <typename T>
     void print_compare_vector(const Vector<T>& vector_a, const Vector<T> vector_b){
         const std::size_t loop_size = std::max(vector_a.size(), vector_b.size());
-        std::cout << loop_size << std::endl;
         std::cout << "[===VECTOR COMPARISON===]" << std::endl;
         for (std::size_t i = 0; i < loop_size; i++){
             try {
@@ -166,6 +165,23 @@ int main() {
         debug::print_compare_vector(copyB, original);
         copyB = copyA;
         debug::print_compare_vector(copyB, original);
+    }
+
+    {
+        std::cout << "Testing move constructor and move assignment..." << std::endl;
+        Vector<int> original ({13, 57, 82, 13, 52});
+        debug::print_vector(original);
+        Vector<int> moved_vector (std::move(original));
+        debug::print_compare_vector(original, moved_vector);
+        std::cout << "Repopulating original list..." << std::endl;
+        original.push_back(12);
+        original.push_back(34);
+        original.push_back(26);
+        original.push_back(9);
+        debug::print_compare_vector(original, moved_vector);
+        std::cout << "Testing move assignment operator..." << std::endl;
+        moved_vector = std::move(original);
+        debug::print_compare_vector(original, moved_vector);
     }
 
     std::cout << "Looks like all tests have passed!" << std::endl;
