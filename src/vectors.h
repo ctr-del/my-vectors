@@ -5,6 +5,7 @@
 #include <utility>
 #include <stdexcept>
 #include <iostream>
+#include <initializer_list>
 
 template <typename T>                                                           //Aw heck, here we go again, welcome back Mr.GPT.
 class Vector {
@@ -13,10 +14,13 @@ class Vector {
         std::size_t _size;                                                      //This is the size of the vector, i.e. the part of the vector that actually has data.
         std::size_t _capacity;                                                  //This is the capacity of the vector, i.e. all the memory allocated to the vector at this point in time.
         void expand();
-        
+
     public:
         //Default vector constructor
         Vector();
+
+        //Initializer list vector constructor
+        Vector(std::initializer_list<T>);
 
         //Vector deconstructor
         ~Vector();
@@ -28,6 +32,19 @@ class Vector {
         //Move operations here for future implementation.
         Vector(Vector&& other) = delete;
         Vector& operator=(Vector&& other) = delete;
+
+        //Iterator Nonsense
+        using iterator = T*;
+        using const_iterator = const T*;
+
+        iterator begin();
+        iterator end();
+
+        const_iterator begin() const;
+        const_iterator end() const;
+
+        const_iterator cbegin() const;
+        const_iterator cend() const;
 
         //Access operators and methods
         T& operator[](std::size_t index);
@@ -61,8 +78,52 @@ Vector<T>::Vector() :
 }
 
 template <typename T>
+Vector<T>::Vector(std::initializer_list<T> initial_array):
+    Vector()
+{
+    for(T item : initial_array){
+        push_back(item);
+    }
+}
+
+template <typename T>
 Vector<T>::~Vector() {
     delete[] _data;
+}
+
+
+//
+// ===[ ITERATOR OPERATIONS ]===
+//
+
+template <typename T>
+auto Vector<T>::begin() -> iterator {
+    return _data;
+}
+
+template <typename T>
+auto Vector<T>::end() -> iterator {
+    return _data + _size;
+}
+
+template <typename T>
+auto Vector<T>::begin() const -> const_iterator {
+    return _data;
+}
+
+template <typename T>
+auto Vector<T>::end() const -> const_iterator {
+    return _data + _size;
+}
+
+template <typename T>
+auto Vector<T>::cbegin() const -> const_iterator {
+    return begin();
+}
+
+template <typename T>
+auto Vector<T>::cend() const -> const_iterator {
+    return end();
 }
 
 //

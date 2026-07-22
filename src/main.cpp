@@ -104,5 +104,24 @@ int main() {
     }
     ok();
 
+    std::cout << "Iterator testing" << std::endl;
+
+    std::cout << "Iterating through the Vector we already have..." << std::endl;
+    for (std::string element : vector){
+        std::cout << element << " ";
+    }
+    std::cout << std::endl;
+    ok();
+
+    std::cout << "Creating a const Vector to test const iterators...";
+    const Vector<int> const_vector ({3, 5, 17, 4, 9, 12, 3, 2, 19, 92, 5, 2, 9});
+    ok();
+
+    std::cout << "Iterating through the const Vector list we have..." << std::endl;
+    for (const auto element : const_vector) {
+        std::cout << element << " ";
+    }
+    ok();
+
     std::cout << "Looks like all tests have passed!" << std::endl;
 }
