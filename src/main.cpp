@@ -135,7 +135,24 @@ int main() {
     });
 
     Test tVectorMoveConstructor("tVectorMoveConstructor", []() -> TestResult {
-        //TODO
+        Vector<int> vector_a ({3, 7, 5, 9 ,4});
+        Vector<int> vector_b (std::move(vector_a));
+
+        if(vector_a.size() != 0) {
+            return TestResult(T_MOVE_CONSTRUCT_MISMATCH, "Vector A didn't get cleared. Move operation failed.");
+        }
+        return TestResult(0);
+    });
+
+    Test tVectorMoveAssignment("tVectorMoveAssignment", []() -> TestResult {
+        Vector<int> vector_a ({3, 5, 7, 9, 5});
+        Vector<int> vector_b;
+        
+        vector_b = std::move(vector_a);
+
+        if(vector_a == vector_b){
+            return TestResult(T_MOVE_ASSIGNMENT_MISMATCH, "Vector A didn't get cleared. Move operation failed.");
+        }
 
         return TestResult(0);
     });

@@ -49,9 +49,9 @@ TestResult Test::run() {
     }
 
     if (result.status() == TestResult::Status::pass) {
-        std::cout << "PASS." << std::endl;
+        std::cout << "OK." << std::endl;
     }else{
-        std::cout << "FAILED." << std::endl << result.description() << std::endl;
+        std::cout << "FAIL." << std::endl << result.description() << std::endl;
     }
 
     return result;
