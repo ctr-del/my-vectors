@@ -7,7 +7,7 @@
 #include <iostream>
 #include <initializer_list>
 
-template <typename T>                                                           //Aw heck, here we go again, welcome back Mr.GPT.
+template <typename T>                                                           //A reimplemenation of Vector for practicing C++
 class Vector {
     private:
         T* _data;
@@ -47,6 +47,11 @@ class Vector {
 
         const_iterator cbegin() const;
         const_iterator cend() const;
+
+        //Comparison operators
+        bool operator==(const Vector<T> other) const;
+        bool operator!=(const Vector<T> other) const;
+
 
         //Access operators and methods
         T& operator[](std::size_t index);
@@ -193,6 +198,27 @@ auto Vector<T>::cbegin() const -> const_iterator {
 template <typename T>
 auto Vector<T>::cend() const -> const_iterator {
     return end();
+}
+
+//
+//  ===[ COMPARISON OPERATORS ]===
+//
+template<typename T>
+bool Vector<T>::operator==(const Vector<T> other) const {
+    if(size() != other.size()) {
+        return false;
+    }
+    for(std::size_t i = 0; i < size(); i++){
+        if((*this)[i] != other[i]){
+            return false;
+        }
+    }
+    return true;
+}
+
+template<typename T>
+bool Vector<T>::operator!=(const Vector<T> other) const {
+    return !((*this) == other);
 }
 
 //
