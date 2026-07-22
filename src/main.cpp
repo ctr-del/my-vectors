@@ -23,10 +23,11 @@ namespace debug {
     template <typename T>
     void print_compare_vector(const Vector<T>& vector_a, const Vector<T> vector_b){
         const std::size_t loop_size = std::max(vector_a.size(), vector_b.size());
+        std::cout << loop_size << std::endl;
         std::cout << "[===VECTOR COMPARISON===]" << std::endl;
         for (std::size_t i = 0; i < loop_size; i++){
             try {
-                std::cout << vector_a[i];
+                std::cout << vector_a.at(i);
             } catch (const std::out_of_range& e){
                 std::cout << "<empty>";
             }
@@ -34,7 +35,7 @@ namespace debug {
             std::cout << " -> ";
 
             try {
-                std::cout << vector_b[i];
+                std::cout << vector_b.at(i);
             } catch (const std::out_of_range& e){
                 std::cout << "<empty>";
             }
@@ -159,7 +160,7 @@ int main() {
         std::cout << "Comparing..." << std::endl;
         debug::print_compare_vector(original, copyA);
         std::cout << "Testing copy assignment..." << std::endl;
-        Vector<int> copyB ({102, 151, 522, 913});
+        Vector<int> copyB ({102, 151, 522, 913, 210, 513, 512});
         debug::print_compare_vector(copyB, original);
         copyB = original;
         debug::print_compare_vector(copyB, original);

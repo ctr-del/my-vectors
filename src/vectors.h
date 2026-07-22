@@ -103,7 +103,7 @@ Vector<T>::Vector(const Vector& other):
 {
     reserve(other._capacity);
 
-    for (auto element : other){
+    for (const auto& element : other){
         push_back(element);
     }
 }
@@ -115,6 +115,8 @@ Vector<T>& Vector<T>::operator=(const Vector& other ){
     if(this == &other){
         return *this;
     }
+
+    reserve(other.capacity());
 
     //Clear the vector before we add anything to it.
     clear();
@@ -262,32 +264,6 @@ void Vector<T>::resize(std::size_t new_size) {
 
     _size = new_size;
 }
-
-/*
-template <typename T>
-void Vector<T>::expand(){
-    std::size_t new_capacity = (_capacity == 0) ? 1 : _capacity * 2;
-    reserve(new_capacity);
-}
-
-template <typename T>
-void Vector<T>::reserve(std::size_t amount){
-    std::size_t new_capacity = _capacity + amount;
-
-    T* new_data = new T[new_capacity];
-
-    for (std::size_t i = 0; i < _size; i++){
-        new_data[i] = std::move(_data[i]);
-    }
-
-    delete[] _data;
-
-    std::cout << _capacity << "/" << new_capacity << std::endl;
-
-    _data = new_data;
-    _capacity = new_capacity;
-}
-*/
 
 //
 // ===[ DATA METHODS ]===
