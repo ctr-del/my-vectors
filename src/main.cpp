@@ -162,7 +162,7 @@ int main() {
         return TestResult(0);
     });
 
-    Test tVectorMoveConstructor("tVectorMoveConstructor", +[]() -> TestResult {
+    Test tVectorMoveConstructor("tVectorMoveConstructor", []() -> TestResult {
         Vector<int> vector_a ({3, 7, 5, 9 ,4});
         Vector<int> vector_b (std::move(vector_a));
 
@@ -189,6 +189,29 @@ int main() {
         }
         
         return TestResult(T_MOVE_CONSTRUCT_MISMATCH, "vector_b didn't match vector_a's elements after it was moved. Something went very wrong.");
+    });
+
+    Test tVectorMoveAssignment("tVectorMoveAssignment", []() -> TestResult {
+        //Vector initialization...
+        Vector<int> vector_a = {1, 2, 3, 4};
+        Vector<int> vector_b = {5, 6, 7, 8};
+
+        vector_a = std::move(vector_b);
+
+        if(!vector_b.empty()){
+            return TestResult(T_MOVE_ASSIGNMENT_MISMATCH, std::format("vector_b was supposed to be empty, but has a size of {}.", vector_b.size()));
+        }
+        if(
+            vector_a[0] == 5 &&
+            vector_a[1] == 6 &&
+            vector_a[2] == 7 &&
+            vector_a[3] == 8
+        ){
+            //Test OK.
+            return TestResult(0);
+        }
+
+        return TestResult(T_MOVE_ASSIGNMENT_MISMATCH, "vector_b didn't match vector_a's elements after it was moved. Something went very wrong.");
     });
 
 
