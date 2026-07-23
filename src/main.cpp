@@ -162,7 +162,7 @@ int main() {
         return TestResult(0);
     });
 
-    Test tVectorMoveConstructor("tVectorMoveConstructor", []() -> TestResult {
+    Test tVectorMoveConstructor("tVectorMoveConstructor", +[]() -> TestResult {
         Vector<int> vector_a ({3, 7, 5, 9 ,4});
         Vector<int> vector_b (std::move(vector_a));
 
